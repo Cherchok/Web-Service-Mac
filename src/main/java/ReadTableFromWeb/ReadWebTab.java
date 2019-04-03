@@ -95,7 +95,8 @@ public class ReadWebTab {
 
             //returns response all params
             System.out.println("response by all params: ");
-            getResponse(XMLresponse);
+            ReadWebTab rwt = new ReadWebTab();
+            System.out.println(rwt.getResponse(XMLresponse));
 
 
             // Close the connection
@@ -113,7 +114,7 @@ public class ReadWebTab {
         return db.parse(is);
     }
 
-    private static Map<String, List<String>> getResponse(String XMLresponse) throws Exception {
+    public Map<String, List<String>> getResponse(String XMLresponse) throws Exception {
         Map<String, List<String>> nodes = new HashMap<>();
         Document xmlDoc = loadXMLString(XMLresponse);
         NodeList nodeList = xmlDoc.getElementsByTagName("*");
