@@ -1,0 +1,161 @@
+package SOAP;
+
+
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.soap.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+
+public class SAAJClient {
+
+    public static void main(String[] args) {
+
+        // enter params for connection
+        String arg1 = "0MB1";
+        String urn = "Zfuncwebmod";
+        String urnName = "urn";
+        String uri = "urn:sap-com:document:sap:soap:functions:mc-style";
+        String destination = "http://SUPPORT.ALPECONSULTING.COM:8201/sap/bc/srt/rfc/sap/ztestweb/100/ztestweb/ztestweb";
+
+        try {
+            // First create the connection
+            SOAPConnectionFactory soapConnFactory = SOAPConnectionFactory.newInstance();
+            SOAPConnection connection = soapConnFactory.createConnection();
+
+            // Next, create the actual message
+            MessageFactory messageFactory = MessageFactory.newInstance();
+            SOAPMessage message = messageFactory.createMessage();
+
+//            // begin authorization
+//            String username = "K.GACHECHILA";
+//            String password = "Welcome1!";
+//
+//            String authorization = new sun.misc.BASE64Encoder().encode((username + ":" + password).getBytes());
+//            MimeHeaders hd = message.getMimeHeaders();
+//            hd.addHeader("Authorization", "Basic " + authorization);
+//            // end authorization
+
+            SOAPPart soapPart = message.getSOAPPart();
+            SOAPEnvelope envelope = soapPart.getEnvelope();
+            envelope.addNamespaceDeclaration(urnName, uri);
+
+
+            // Create and populate the body
+            SOAPBody body = envelope.getBody();
+            // Create the main element and namespace
+            SOAPElement bodyElement = body.addChildElement(envelope.createName("urn:" + urn));
+            // Add parameters
+            bodyElement.addChildElement("ImBukrs").addTextNode(arg1);
+            // Save the message
+            message.saveChanges();
+
+            // Check the input
+            System.out.println("\nRequest:\n");
+            message.writeTo(System.out);
+            System.out.println();
+
+
+            // Send the message and get the reply
+            SOAPMessage reply = connection.call(message, destination);
+
+            // Retrieve the result - no error checking is done: BAD! ExButxt ExOrt01
+            soapPart = reply.getSOAPPart();
+            envelope = soapPart.getEnvelope();
+            body = envelope.getBody();
+            Iterator iter = body.getChildElements();
+
+
+
+//            LinkedList<Node> nodes = new LinkedList<Node>();
+//            while (iter.hasNext()){
+//                Node resultOuter = ((Node) iter.next()).getFirstChild();
+//                Node result = resultOuter.getFirstChild();
+//                nodes.add(result);
+//                iter.next();
+//            }
+//            System.out.println("node size: "+nodes.size());
+//            for (Node n: nodes) {
+//                System.out.println(n.getAttributes()+" = "+n.getNodeValue());
+//            }
+
+//            Node resultOuter = ((Node) iter.next()).getFirstChild();
+//            Node result = resultOuter.getFirstChild();
+//            System.out.println("request by  ImBukrs param: (" + arg1 + ") = response: "+ resultOuter.getNodeName()+" :"
+//                                + result.getNodeValue());
+
+
+
+//            // Check the output
+//            System.out.println("\nResponse:\n");
+//            // Create the transformer
+//            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//            Transformer transformer = transformerFactory.newTransformer();
+//            // Extract the content of the reply
+//            Source sourceContent = reply.getSOAPPart().getContent();
+//            // Set the output for the transformation
+//            StreamResult result2 = new StreamResult(System.out);
+//            transformer.transform(sourceContent, result2);
+
+
+            //get response as a string
+            final StringWriter sw = new StringWriter();
+
+            try {
+                TransformerFactory.newInstance().newTransformer().transform(
+                        new DOMSource(reply.getSOAPPart()),
+                        new StreamResult(sw));
+            } catch (TransformerException e) {
+                throw new RuntimeException(e);
+            }
+            // Now you have the XML as a String:
+            String response = sw.toString();
+            getFullNameFromXml(response, "ExOrt01");
+
+
+
+            // Close the connection
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+
+    public static Document loadXMLString(String response) throws Exception
+    {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        InputSource is = new InputSource(new StringReader(response));
+
+        return db.parse(is);
+    }
+
+    public static List<String> getFullNameFromXml(String response, String tagName) throws Exception {
+        System.out.println("Response: ");
+        Document xmlDoc = loadXMLString(response);
+        NodeList nodeList = xmlDoc.getElementsByTagName(tagName);
+        List<String> ids = new ArrayList<String>(nodeList.getLength());
+        for(int i=0;i<nodeList.getLength(); i++) {
+            Node x = nodeList.item(i);
+            ids.add(x.getFirstChild().getNodeValue());
+            System.out.println( x.getNodeName()+" = "+nodeList.item(i).getFirstChild().getNodeValue());
+        }
+        return ids;
+    }
+
+}
