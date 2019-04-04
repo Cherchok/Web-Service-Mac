@@ -83,6 +83,7 @@ public class WebData {
                     switch (x.getTagName()) {
                         case "FIELDNAME":
                             fieldName.addLast(value);
+                            System.out.println(fieldName);
                             break;
                         case "DATATYPE":
                             dataType.add(value);
