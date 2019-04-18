@@ -1,4 +1,4 @@
-package WebServiceApplication;
+package GetData;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -228,7 +228,4 @@ public class WebData {
         columnLeng = leng;
         return dataMap;
     }
-
-
-
 }

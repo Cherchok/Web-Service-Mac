@@ -1,4 +1,4 @@
-package WebServiceApplication;
+package GetData;
 
 import javax.xml.soap.*;
 import javax.xml.transform.TransformerException;
@@ -16,12 +16,6 @@ public class XMLresponse {
         this.arg1 = table;
         this.arg2 = fieldsQuan;
         this.arg3 = language;
-    }
-
-    public XMLresponse() {
-        this.arg1 = "T001";
-        this.arg2 = "10";
-        this.arg3 = "D";
     }
 
     public String getXMLresponse() {

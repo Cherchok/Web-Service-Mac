@@ -1,7 +1,7 @@
 package UI;
 
-import WebServiceApplication.WebData;
-import WebServiceApplication.XMLresponse;
+import GetData.WebData;
+import GetData.XMLresponse;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
