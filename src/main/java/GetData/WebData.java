@@ -10,10 +10,18 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.util.*;
 
+@SuppressWarnings("all")
 public class WebData {
     private Map<String, List<String>> dataMap = new LinkedHashMap<>();
     private List<String> columnLeng = new LinkedList<>();
+    private LinkedList<String> fieldName = new LinkedList<>();
+    private List<String> dataType = new LinkedList<>();
+    private List<String> repText = new LinkedList<>();
+    private List<String> domName = new LinkedList<>();
+    private List<String> outputLen = new LinkedList<>();
+    private List<String> decimals = new LinkedList<>();
 
+    // process of XML response
     private static Document loadXMLString(String XMLresponse) throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -25,18 +33,38 @@ public class WebData {
         return columnLeng;
     }
 
-    @SuppressWarnings({"all"})
+    public Map<String, List<String>> getDataMap() {
+        return dataMap;
+    }
+
+    public LinkedList<String> getFieldName() {
+        return fieldName;
+    }
+
+    public List<String> getDataType() {
+        return dataType;
+    }
+
+    public List<String> getRepText() {
+        return repText;
+    }
+
+    public List<String> getDomName() {
+        return domName;
+    }
+
+    public List<String> getOutputLen() {
+        return outputLen;
+    }
+
+    public List<String> getDecimals() {
+        return decimals;
+    }
+
     //get Map with name of fields as key and List of values as val by xml response.
     public Map<String, List<String>> getResponse(String XMLresponse) throws Exception {
         Document xmlDoc = loadXMLString(XMLresponse);
         NodeList nodeList = xmlDoc.getElementsByTagName("*");
-        LinkedList<String> fieldName = new LinkedList<>();
-        List<String> dataType = new LinkedList<>();
-        List<String> repText = new LinkedList<>();
-        List<String> domName = new LinkedList<>();
-        List<String> leng = new LinkedList<>();
-        List<String> outputLen = new LinkedList<>();
-        List<String> decimals = new LinkedList<>();
         StringBuilder zdata;
         String zdataTemp;
         String value;
@@ -73,9 +101,9 @@ public class WebData {
                             }
                         }
                         for (String val : fieldName) {
-                            zdataTemp = zdata.substring(0, Integer.parseInt(leng.get(fieldName.indexOf(val))));
+                            zdataTemp = zdata.substring(0, Integer.parseInt(columnLeng.get(fieldName.indexOf(val))));
                             zdata = new StringBuilder(zdata.substring(Integer.parseInt
-                                    (leng.get(fieldName.indexOf(val)))));
+                                    (columnLeng.get(fieldName.indexOf(val)))));
                             dataMap.get(val).add(zdataTemp);
                         }
                     }
@@ -87,6 +115,7 @@ public class WebData {
                     }
 
                     //add values of tag in tag lists
+
                     switch (element.getTagName()) {
                         case "FIELDNAME":
                             fieldName.addLast(value);
@@ -101,7 +130,7 @@ public class WebData {
                             domName.add(value);
                             break;
                         case "LENG":
-                            leng.add(value);
+                            columnLeng.add(value);
                             // get sum of all fileds length in table
                             lengthTab += Integer.parseInt(value);
                             break;
@@ -122,22 +151,13 @@ public class WebData {
                 flag = true;
             }
         }
-        columnLeng = leng;
         return dataMap;
     }
 
-    @SuppressWarnings({"all"})
     //get Map with name of fields as key and List of values as val by xml response and field butxt.
     public Map<String, List<String>> getResponse(String xmlresponse, String butxt) throws Exception {
         Document xmlDoc = loadXMLString(xmlresponse);
         NodeList nodeList = xmlDoc.getElementsByTagName("*");
-        LinkedList<String> fieldName = new LinkedList<>();
-        List<String> dataType = new LinkedList<>();
-        List<String> repText = new LinkedList<>();
-        List<String> domName = new LinkedList<>();
-        List<String> leng = new LinkedList<>();
-        List<String> outputLen = new LinkedList<>();
-        List<String> decimals = new LinkedList<>();
         StringBuilder zdata;
         String zdataTemp;
         String value;
@@ -175,9 +195,9 @@ public class WebData {
                                 }
                             }
                             for (String val : fieldName) {
-                                zdataTemp = zdata.substring(0, Integer.parseInt(leng.get(fieldName.indexOf(val))));
+                                zdataTemp = zdata.substring(0, Integer.parseInt(columnLeng.get(fieldName.indexOf(val))));
                                 zdata = new StringBuilder(zdata.substring(Integer.parseInt
-                                        (leng.get(fieldName.indexOf(val)))));
+                                        (columnLeng.get(fieldName.indexOf(val)))));
                                 dataMap.get(val).add(zdataTemp);
                             }
                         }
@@ -204,7 +224,7 @@ public class WebData {
                             domName.add(value);
                             break;
                         case "LENG":
-                            leng.add(value);
+                            columnLeng.add(value);
                             // get sum of all fileds length in table
                             lengthTab += Integer.parseInt(value);
                             break;
@@ -225,7 +245,6 @@ public class WebData {
                 flag = true;
             }
         }
-        columnLeng = leng;
         return dataMap;
     }
 }

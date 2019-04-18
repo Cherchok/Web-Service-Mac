@@ -58,7 +58,6 @@ class TableFrame extends JFrame {
                 table.getColumnModel().getColumn(columnNumber).setMinWidth(table.getColumnModel()
                         .getColumn(columnNumber).getWidth());
             columnNumber++;
-
         }
 
         // enable scrolls (horizontal and vertical) for table. It possible only when "JTable.AUTO_RESIZE_OFF"!!!!!!
@@ -66,6 +65,7 @@ class TableFrame extends JFrame {
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.add(scrollPane, BorderLayout.CENTER);
 
+        // set button and panel of buttons
         JButton findAllButton = new JButton("find all");
         JPanel buttons = new JPanel(new GridLayout(0, 3));
         buttons.setMaximumSize(new Dimension(300, 100));

@@ -37,11 +37,11 @@ public class XMLresponse {
             MessageFactory messageFactory = MessageFactory.newInstance();
             SOAPMessage message = messageFactory.createMessage();
 
-            //begin authorization
+            // authorization params
 //            String authorization = new sun.misc.BASE64Encoder().encode((username + ":" + password).getBytes());
 //            MimeHeaders hd = message.getMimeHeaders();
 //            hd.addHeader("Authorization", "Basic " + authorization);
-            //end authorization
+
 
             SOAPPart soapPart = message.getSOAPPart();
             SOAPEnvelope envelope = soapPart.getEnvelope();
@@ -50,9 +50,10 @@ public class XMLresponse {
 
             // Create and populate the body
             SOAPBody body = envelope.getBody();
-            // Create the main element and namespace
+
             // enter params for connection
             SOAPElement bodyElement = body.addChildElement(envelope.createName("urn:" + urn));
+
             // Add parameters
             bodyElement.addChildElement("LANG").addTextNode(arg3);
             bodyElement.addChildElement("FIELDSQUAN").addTextNode(arg2);
