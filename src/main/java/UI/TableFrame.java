@@ -12,7 +12,7 @@ import java.util.Map;
 class TableFrame extends JFrame {
 
     // constructor
-    TableFrame(String tableName, String rowQuantity, String language) {
+    TableFrame(String tableName, String rowQuantity, String language, String where) {
 
         //set title to frame
         super(tableName);
@@ -20,7 +20,7 @@ class TableFrame extends JFrame {
         table.setAutoCreateRowSorter(true);
 
         //get SOAP response, by dilling params
-        XMLresponse xmlResponse = new XMLresponse(tableName, rowQuantity, language);
+        XMLresponse xmlResponse = new XMLresponse(tableName, rowQuantity, language, where);
 
         // model of filling table
         DefaultTableModel tableModel = new DefaultTableModel();
