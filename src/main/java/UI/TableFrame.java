@@ -10,17 +10,73 @@ import java.util.List;
 import java.util.Map;
 
 class TableFrame extends JFrame {
+    private static String tabName;
+    private static String rowQuan;
+    private static String lang;
+    private static String condition;
 
-    // constructor
+    // constructors
     TableFrame(String tableName, String rowQuantity, String language, String where) {
 
         //set title to frame
         super(tableName);
+
+        // set params
+        tabName = tableName;
+        rowQuan = rowQuantity;
+        lang = language;
+        condition = where;
+        getFrame();
+
+    }
+
+    TableFrame(String tableName, String rowQuantity, String language) {
+
+        //set title to frame
+        super(tableName);
+
+        // set params
+        tabName = tableName;
+        rowQuan = rowQuantity;
+        lang = language;
+        condition = "";
+        getFrame();
+
+    }
+
+    TableFrame(String tableName, String rowQuantity ) {
+
+        //set title to frame
+        super(tableName);
+
+        // set params
+        tabName = tableName;
+        rowQuan = rowQuantity;
+        lang = "E";
+        condition = "";
+        getFrame();
+
+    }
+
+    TableFrame(String tableName) {
+
+        //set title to frame
+        super(tableName);
+
+        // set params
+        tabName = tableName;
+        rowQuan = "1";
+        lang = "E";
+        condition = "";
+        getFrame();
+
+    }
+
+    private void getFrame(){
         JTable table = new JTable();
         table.setAutoCreateRowSorter(true);
-
         //get SOAP response, by dilling params
-        XMLresponse xmlResponse = new XMLresponse(tableName, rowQuantity, language, where);
+        XMLresponse xmlResponse = new XMLresponse(tabName, rowQuan, lang, condition);
 
         // model of filling table
         DefaultTableModel tableModel = new DefaultTableModel();
