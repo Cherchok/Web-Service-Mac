@@ -14,6 +14,7 @@ class TableFrame extends JFrame {
     private static String rowQuan;
     private static String lang;
     private static String condition;
+    private static int rows;
 
     // constructors
     TableFrame(String tableName, String rowQuantity, String language, String where) {
@@ -65,7 +66,7 @@ class TableFrame extends JFrame {
 
         // set params
         tabName = tableName;
-        rowQuan = "1";
+        rowQuan = Integer.toString(rows);
         lang = "E";
         condition = "";
         getFrame();
@@ -90,8 +91,12 @@ class TableFrame extends JFrame {
             e.printStackTrace();
         }
 
+
         for (String k : data.keySet()) {
             Object[] obj = data.get(k).toArray();
+
+            // get quantity of rows in table
+            rows = obj.length;
             tableModel.addColumn(k, obj);
         }
 
