@@ -14,9 +14,65 @@ class TableFrame extends JFrame {
     private static String rowQuan;
     private static String lang;
     private static String condition;
+    private static String order;
+    private static String group;
+    private static String fields;
     private static int rows;
 
+
     // constructors
+    TableFrame(String tableName, String rowQuantity, String language, String where,String orderBy, String groupBy,
+               String fieldNames) {
+
+        //set title to frame
+        super(tableName);
+
+        // set params
+        tabName = tableName;
+        rowQuan = rowQuantity;
+        lang = language;
+        condition = where;
+        order = orderBy;
+        group = groupBy;
+        fields = fieldNames;
+        getFrame();
+
+    }
+
+    TableFrame(String tableName, String rowQuantity, String language, String where,String orderBy, String groupBy) {
+
+        //set title to frame
+        super(tableName);
+
+        // set params
+        tabName = tableName;
+        rowQuan = rowQuantity;
+        lang = language;
+        condition = where;
+        order = orderBy;
+        group = groupBy;
+        fields = "";
+        getFrame();
+
+    }
+
+    TableFrame(String tableName, String rowQuantity, String language, String where,String orderBy) {
+
+        //set title to frame
+        super(tableName);
+
+        // set params
+        tabName = tableName;
+        rowQuan = rowQuantity;
+        lang = language;
+        condition = where;
+        order = orderBy;
+        group = "";
+        fields = "";
+        getFrame();
+
+    }
+
     TableFrame(String tableName, String rowQuantity, String language, String where) {
 
         //set title to frame
@@ -27,6 +83,9 @@ class TableFrame extends JFrame {
         rowQuan = rowQuantity;
         lang = language;
         condition = where;
+        order = "";
+        group = "";
+        fields = "";
         getFrame();
 
     }
@@ -41,6 +100,9 @@ class TableFrame extends JFrame {
         rowQuan = rowQuantity;
         lang = language;
         condition = "";
+        order = "";
+        group = "";
+        fields = "";
         getFrame();
 
     }
@@ -55,6 +117,9 @@ class TableFrame extends JFrame {
         rowQuan = rowQuantity;
         lang = "E";
         condition = "";
+        order = "";
+        group = "";
+        fields = "";
         getFrame();
 
     }
@@ -69,6 +134,9 @@ class TableFrame extends JFrame {
         rowQuan = Integer.toString(rows);
         lang = "E";
         condition = "";
+        order = "";
+        group = "";
+        fields = "";
         getFrame();
 
     }
@@ -77,7 +145,7 @@ class TableFrame extends JFrame {
         JTable table = new JTable();
         table.setAutoCreateRowSorter(true);
         //get SOAP response, by dilling params
-        XMLresponse xmlResponse = new XMLresponse(tabName, rowQuan, lang, condition);
+        XMLresponse xmlResponse = new XMLresponse(tabName, rowQuan, lang, condition, order, group, fields);
 
         // model of filling table
         DefaultTableModel tableModel = new DefaultTableModel();
