@@ -2,6 +2,7 @@ package UI;
 
 import GetData.WebData;
 import GetData.XMLresponse;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -21,7 +22,7 @@ class TableFrame extends JFrame {
 
 
     // constructors
-    TableFrame(String tableName, String rowQuantity, String language, String where,String orderBy, String groupBy,
+    TableFrame(String tableName, String rowQuantity, String language, String where, String orderBy, String groupBy,
                String fieldNames) {
 
         //set title to frame
@@ -39,7 +40,7 @@ class TableFrame extends JFrame {
 
     }
 
-    TableFrame(String tableName, String rowQuantity, String language, String where,String orderBy, String groupBy) {
+    TableFrame(String tableName, String rowQuantity, String language, String where, String orderBy, String groupBy) {
 
         //set title to frame
         super(tableName);
@@ -56,7 +57,7 @@ class TableFrame extends JFrame {
 
     }
 
-    TableFrame(String tableName, String rowQuantity, String language, String where,String orderBy) {
+    TableFrame(String tableName, String rowQuantity, String language, String where, String orderBy) {
 
         //set title to frame
         super(tableName);
@@ -107,7 +108,7 @@ class TableFrame extends JFrame {
 
     }
 
-    TableFrame(String tableName, String rowQuantity ) {
+    TableFrame(String tableName, String rowQuantity) {
 
         //set title to frame
         super(tableName);
@@ -141,7 +142,7 @@ class TableFrame extends JFrame {
 
     }
 
-    private void getFrame(){
+    private void getFrame() {
         JTable table = new JTable();
         table.setAutoCreateRowSorter(true);
         //get SOAP response, by dilling params
@@ -165,6 +166,9 @@ class TableFrame extends JFrame {
 
             // get quantity of rows in table
             rows = obj.length;
+//            if(k.equals("MANDT") && obj[1].equals("")){
+//                obj = ArrayUtils.remove(obj,1);
+//            }
             tableModel.addColumn(k, obj);
         }
 

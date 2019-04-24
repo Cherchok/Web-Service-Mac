@@ -29,13 +29,13 @@ public class XMLresponse {
 
     public String getXMLresponse() {
         String xmlResponse = null;
- //       String username = "K.GACHECHILA";
- //       String password = "Welcome1!";
+        //       String username = "K.GACHECHILA";
+        //       String password = "Welcome1!";
         String urnName = "urn";
         String urn = "ZTABLEREAD";
         String uri = "urn:sap-com:document:sap:rfc:functions";
-        String destination = "http://support.alpeconsulting.com:8201/sap/bc/srt/rfc/sap/z_tab_read_ws/100/" +
-                "z_tab_read_ws/z_tab_read_ws";
+        String destination = "http://support.alpeconsulting.com:8201/sap/bc/srt/rfc/sap/ztablereadws/100/" +
+                "ztablereadws/ztablereadws";
         // create XML request , get connection, get XML response as a string/
         try {
             // First create the connection

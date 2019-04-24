@@ -20,6 +20,7 @@ public class WebData {
     private List<String> domName = new LinkedList<>();
     private List<String> outputLen = new LinkedList<>();
     private List<String> decimals = new LinkedList<>();
+    private int quan;
 
     // process of XML response
     private static Document loadXMLString(String XMLresponse) throws Exception {
@@ -27,6 +28,10 @@ public class WebData {
         DocumentBuilder db = dbf.newDocumentBuilder();
         InputSource is = new InputSource(new StringReader(XMLresponse));
         return db.parse(is);
+    }
+
+    public int getQuan() {
+        return quan;
     }
 
     public List<String> getColumnLeng() {
@@ -84,7 +89,6 @@ public class WebData {
             // condition: when tag equals "item" and it's opening tag then....
             if (flag) {
                 if (element.getTagName().equals("WA") || element.getTagName().equals("ZDATA")) {
-                    if (element.getFirstChild().getNodeValue() != null) {
                         if (!flagFE) {
                             flagFE = true;
                             for (String name : fieldName) {
@@ -93,7 +97,12 @@ public class WebData {
                         }
                         // the line, which contains values must have the same length as sum of all chars of fileds in
                         // table.
+                    try {
                         zdata = new StringBuilder(element.getFirstChild().getNodeValue());
+                    }catch (NullPointerException e){
+                            zdata = new StringBuilder("");
+                    }
+
                         if (zdata.length() < lengthTab) {
                             int dif = lengthTab - zdata.length();
                             for (int i = 0; i < dif; i++) {
@@ -106,7 +115,7 @@ public class WebData {
                                     (columnLeng.get(fieldName.indexOf(val)))));
                             dataMap.get(val).add(zdataTemp);
                         }
-                    }
+
                 } else {
                     // a little treak in ABAP and JAVA with null values of attributes inside the xml response
                     value = element.getFirstChild().getNodeValue();
@@ -151,6 +160,11 @@ public class WebData {
                 flag = true;
             }
         }
+        for (String k : dataMap.keySet()) {
+            dataMap.get(k).remove(0);
+            quan = dataMap.get(k).size();
+        }
+
         return dataMap;
     }
 }
