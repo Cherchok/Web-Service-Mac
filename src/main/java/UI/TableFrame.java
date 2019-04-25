@@ -19,10 +19,29 @@ class TableFrame extends JFrame {
     private static String group;
     private static String fields;
     private static int rows;
+    private static boolean naming;
     private Map<String, List<String>> data = new LinkedHashMap<>();
 
 
     // constructors
+    TableFrame(String tableName, String rowQuantity, String language, String where, String orderBy, String groupBy,
+               String fieldNames, boolean namingOfFields) {
+
+        //set title to frame
+        super(tableName);
+
+        // set params
+        tabName = tableName;
+        rowQuan = rowQuantity;
+        lang = language;
+        condition = where;
+        order = orderBy;
+        group = groupBy;
+        fields = fieldNames;
+        naming = namingOfFields;
+
+    }
+
     TableFrame(String tableName, String rowQuantity, String language, String where, String orderBy, String groupBy,
                String fieldNames) {
 
@@ -37,6 +56,7 @@ class TableFrame extends JFrame {
         order = orderBy;
         group = groupBy;
         fields = fieldNames;
+        naming = false;
 
     }
 
@@ -53,6 +73,7 @@ class TableFrame extends JFrame {
         order = orderBy;
         group = groupBy;
         fields = "";
+        naming = false;
 
     }
 
@@ -69,6 +90,7 @@ class TableFrame extends JFrame {
         order = orderBy;
         group = "";
         fields = "";
+        naming = false;
 
     }
 
@@ -85,6 +107,7 @@ class TableFrame extends JFrame {
         order = "";
         group = "";
         fields = "";
+        naming = false;
     }
 
     TableFrame(String tableName, String rowQuantity, String language) {
@@ -100,6 +123,7 @@ class TableFrame extends JFrame {
         order = "";
         group = "";
         fields = "";
+        naming = false;
     }
 
     TableFrame(String tableName, String rowQuantity) {
@@ -115,6 +139,7 @@ class TableFrame extends JFrame {
         order = "";
         group = "";
         fields = "";
+        naming = false;
     }
 
     TableFrame(String tableName) {
@@ -130,6 +155,7 @@ class TableFrame extends JFrame {
         order = "";
         group = "";
         fields = "";
+        naming = false;
     }
 
     public Map<String, List<String>> getData() {
@@ -144,7 +170,7 @@ class TableFrame extends JFrame {
         // model of filling table
         DefaultTableModel tableModel = new DefaultTableModel();
 
-       // get map for table
+        // get map for table
         WebData wd = new WebData();
         XMLresponse xmlResponse = new XMLresponse(tabName, rowQuan, lang, condition, order, group, fields);
         try {
@@ -158,7 +184,13 @@ class TableFrame extends JFrame {
 
             // get quantity of rows in table
             rows = obj.length;
-            tableModel.addColumn(k, obj);
+            if (naming) {
+                wd.getFieldName().indexOf(k);
+                String rep = wd.getRepText().get(wd.getFieldName().indexOf(k));
+                tableModel.addColumn(rep, obj);
+            } else
+                tableModel.addColumn(k, obj);
+
         }
 
         // interface settings for table
@@ -174,11 +206,11 @@ class TableFrame extends JFrame {
         int columnNumber = 0;
         for (String leng : wd.getColumnLeng()) {
             int length = Integer.parseInt(leng) * 10;
-            if (length > table.getColumnModel().getColumn(columnNumber).getWidth()) {
+            int columnLeng = table.getColumnModel().getColumn(columnNumber).getWidth();
+            if (length > columnLeng ) {
                 table.getColumnModel().getColumn(columnNumber).setMinWidth(length);
             } else
-                table.getColumnModel().getColumn(columnNumber).setMinWidth(table.getColumnModel()
-                        .getColumn(columnNumber).getWidth());
+                table.getColumnModel().getColumn(columnNumber).setMinWidth(columnLeng);
             columnNumber++;
         }
 

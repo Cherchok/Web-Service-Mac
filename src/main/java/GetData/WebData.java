@@ -91,9 +91,10 @@ public class WebData {
                 if (element.getTagName().equals("WA") || element.getTagName().equals("ZDATA")) {
                         if (!flagFE) {
                             flagFE = true;
-                            for (String name : fieldName) {
-                                dataMap.put(name, new LinkedList<>());
-                            }
+                                for (String name : fieldName) {
+                                    dataMap.put(name, new LinkedList<>());
+                                }
+
                         }
                         // the line, which contains values must have the same length as sum of all chars of fileds in
                         // table.
