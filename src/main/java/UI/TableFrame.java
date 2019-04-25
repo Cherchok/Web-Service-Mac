@@ -19,6 +19,7 @@ class TableFrame extends JFrame {
     private static String group;
     private static String fields;
     private static int rows;
+    private Map<String, List<String>> data = new LinkedHashMap<>();
 
 
     // constructors
@@ -36,7 +37,6 @@ class TableFrame extends JFrame {
         order = orderBy;
         group = groupBy;
         fields = fieldNames;
-        getFrame();
 
     }
 
@@ -53,7 +53,6 @@ class TableFrame extends JFrame {
         order = orderBy;
         group = groupBy;
         fields = "";
-        getFrame();
 
     }
 
@@ -70,7 +69,6 @@ class TableFrame extends JFrame {
         order = orderBy;
         group = "";
         fields = "";
-        getFrame();
 
     }
 
@@ -87,8 +85,6 @@ class TableFrame extends JFrame {
         order = "";
         group = "";
         fields = "";
-        getFrame();
-
     }
 
     TableFrame(String tableName, String rowQuantity, String language) {
@@ -104,8 +100,6 @@ class TableFrame extends JFrame {
         order = "";
         group = "";
         fields = "";
-        getFrame();
-
     }
 
     TableFrame(String tableName, String rowQuantity) {
@@ -121,8 +115,6 @@ class TableFrame extends JFrame {
         order = "";
         group = "";
         fields = "";
-        getFrame();
-
     }
 
     TableFrame(String tableName) {
@@ -138,37 +130,34 @@ class TableFrame extends JFrame {
         order = "";
         group = "";
         fields = "";
-        getFrame();
-
     }
 
-    private void getFrame() {
+    public Map<String, List<String>> getData() {
+        return data;
+    }
+
+    // call GUI interface
+    public void getFrame() {
         JTable table = new JTable();
         table.setAutoCreateRowSorter(true);
-        //get SOAP response, by dilling params
-        XMLresponse xmlResponse = new XMLresponse(tabName, rowQuan, lang, condition, order, group, fields);
 
         // model of filling table
         DefaultTableModel tableModel = new DefaultTableModel();
 
-        // filling the table by values
-        Map<String, List<String>> data = new LinkedHashMap<>();
+       // get map for table
         WebData wd = new WebData();
+        XMLresponse xmlResponse = new XMLresponse(tabName, rowQuan, lang, condition, order, group, fields);
         try {
             data = wd.getResponse(xmlResponse.getXMLresponse());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
         for (String k : data.keySet()) {
             Object[] obj = data.get(k).toArray();
 
             // get quantity of rows in table
             rows = obj.length;
-//            if(k.equals("MANDT") && obj[1].equals("")){
-//                obj = ArrayUtils.remove(obj,1);
-//            }
             tableModel.addColumn(k, obj);
         }
 
